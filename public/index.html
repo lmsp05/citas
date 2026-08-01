@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agendamiento de citas | Parroquia</title>
+  <meta name="description" content="Solicite una cita con los lideres de la parroquia segun su disponibilidad real.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="/">
+        <span class="mark" aria-hidden="true">&#10013;</span>
+        <span><span id="parish-name">Parroquia</span><small>Agendamiento de citas</small></span>
+      </a>
+      <nav class="site" aria-label="Principal">
+        <a href="/" aria-current="page">Solicitar cita</a>
+        <a href="/consulta">Consultar o cancelar</a>
+        <a href="/panel">Soy lider</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero">
+      <h1>Solicite una cita con un lider de la parroquia</h1>
+      <p>Elija a quien desea ver, escoja un horario libre en el calendario y deje sus datos.
+         Recibira un codigo para consultar o cancelar su cita cuando lo necesite.</p>
+    </section>
+
+    <div id="aviso" class="msg err" role="alert" hidden></div>
+
+    <section class="card">
+      <h2><span class="step">1</span> Elija al lider</h2>
+      <p class="hint">Solo aparecen quienes tienen horarios de atencion publicados.</p>
+      <div id="leaders" class="leaders" role="group" aria-label="Lideres disponibles"></div>
+    </section>
+
+    <section class="card" id="paso-calendario" hidden>
+      <h2><span class="step">2</span> Escoja el dia</h2>
+      <p class="hint" id="calendar-hint">Los dias en verde tienen horarios libres.</p>
+      <div class="cal-head">
+        <button type="button" class="small" id="prev-month">&#8592; Mes anterior</button>
+        <h3 id="month-label">&nbsp;</h3>
+        <button type="button" class="small" id="next-month">Mes siguiente &#8594;</button>
+      </div>
+      <div class="grid-days" aria-hidden="true">
+        <span>Dom</span><span>Lun</span><span>Mar</span><span>Mie</span><span>Jue</span><span>Vie</span><span>Sab</span>
+      </div>
+      <div class="grid-cal" id="calendar" role="group" aria-label="Dias con disponibilidad"></div>
+      <p class="legend">
+        <span><i class="l-free"></i>Con cupos libres</span>
+        <span><i class="l-none"></i>Sin atencion</span>
+        <span><i class="l-today"></i>Hoy</span>
+      </p>
+    </section>
+
+    <section class="card" id="paso-horarios" hidden>
+      <h2><span class="step">3</span> Escoja la hora</h2>
+      <p class="hint" id="slots-hint"></p>
+      <div id="slots" class="slots" role="group" aria-label="Horarios disponibles"></div>
+    </section>
+
+    <section class="card" id="paso-datos" hidden>
+      <h2><span class="step">4</span> Sus datos</h2>
+      <div class="summary" id="resumen"></div>
+      <form id="form-cita" novalidate>
+        <div class="row">
+          <div>
+            <label for="requester_name">Nombre completo</label>
+            <input id="requester_name" name="requester_name" autocomplete="name" maxlength="120" required>
+          </div>
+          <div>
+            <label for="requester_email">Correo electronico</label>
+            <input id="requester_email" name="requester_email" type="email" autocomplete="email" maxlength="254" required>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="requester_phone">Telefono <span class="opt">(opcional)</span></label>
+            <input id="requester_phone" name="requester_phone" type="tel" autocomplete="tel" maxlength="25">
+          </div>
+          <div>
+            <label for="service">Motivo de la cita</label>
+            <select id="service" name="service" required></select>
+          </div>
+        </div>
+        <label for="notes">Comentario para el lider <span class="opt">(opcional)</span></label>
+        <textarea id="notes" name="notes" maxlength="600"
+          placeholder="Cuente brevemente en que desea ser acompanado."></textarea>
+        <p class="muted">Sus datos se usan solo para gestionar esta cita y para que el lider pueda
+          contactarle. No se comparten con terceros.</p>
+        <div id="form-msg" class="msg err" role="alert" hidden></div>
+        <button type="submit" class="primary" id="enviar">Solicitar cita</button>
+      </form>
+    </section>
+
+    <section class="card" id="paso-listo" hidden>
+      <h2>Solicitud registrada</h2>
+      <p>Guarde este codigo: lo necesitara junto con su correo para consultar o cancelar la cita.</p>
+      <p><span class="code" id="codigo"></span></p>
+      <div class="summary" id="resumen-final"></div>
+      <p class="muted">La cita queda <b>pendiente</b> hasta que el lider la confirme.
+        Si no puede asistir, cancelela para liberar el horario a otra persona.</p>
+      <p>
+        <a class="ghost" href="/consulta">Consultar mi cita</a> &nbsp;
+        <button type="button" class="small" id="otra">Solicitar otra cita</button>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site">
+    <p id="footer-text">Agenda parroquial</p>
+  </footer>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

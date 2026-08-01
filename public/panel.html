@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel del lider | Agenda parroquial</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="/">
+        <span class="mark" aria-hidden="true">&#10013;</span>
+        <span><span id="parish-name">Parroquia</span><small>Panel de lideres</small></span>
+      </a>
+      <nav class="site" aria-label="Principal">
+        <a href="/">Sitio publico</a>
+        <span id="quien" class="muted"></span>
+        <a href="#" id="salir" hidden>Cerrar sesion</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="card" id="login-card">
+      <h2>Ingreso de lideres</h2>
+      <p class="hint">Solo para personal de la parroquia. Los intentos fallidos quedan registrados.</p>
+      <form id="form-login" novalidate>
+        <label for="email">Correo</label>
+        <input id="email" name="email" type="email" autocomplete="username" maxlength="254" required>
+        <label for="password">Contrasena</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" maxlength="200" required>
+        <div id="login-msg" class="msg err" role="alert" hidden></div>
+        <button type="submit" class="primary">Ingresar</button>
+      </form>
+    </section>
+
+    <div id="panel" hidden>
+      <div id="aviso-clave" class="msg info" role="status" hidden>
+        Su contrasena fue asignada por el administrador. Cambiela en la pestana "Mi cuenta".
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="solicitudes" aria-selected="true">Solicitudes</button>
+        <button type="button" role="tab" data-tab="agenda" aria-selected="false">Mi agenda</button>
+        <button type="button" role="tab" data-tab="disponibilidad" aria-selected="false">Disponibilidad</button>
+        <button type="button" role="tab" data-tab="cuenta" aria-selected="false">Mi cuenta</button>
+        <button type="button" role="tab" data-tab="admin" aria-selected="false" id="tab-admin" hidden>Administracion</button>
+      </div>
+
+      <section class="card tab" id="tab-solicitudes">
+        <h2>Solicitudes de cita</h2>
+        <p class="hint">Confirme las citas que puede atender. Al cancelar, el horario vuelve a quedar libre.</p>
+        <div class="inline">
+          <div>
+            <label for="filtro-estado">Estado</label>
+            <select id="filtro-estado">
+              <option value="">Todos</option>
+              <option value="pendiente" selected>Pendientes</option>
+              <option value="confirmada">Confirmadas</option>
+              <option value="cancelada">Canceladas</option>
+              <option value="atendida">Atendidas</option>
+            </select>
+          </div>
+          <div>
+            <label for="filtro-desde">Desde</label>
+            <input id="filtro-desde" type="date">
+          </div>
+          <div>
+            <label for="filtro-hasta">Hasta</label>
+            <input id="filtro-hasta" type="date">
+          </div>
+          <div><button type="button" class="ghost" id="recargar">Actualizar</button></div>
+        </div>
+        <div id="msg-solicitudes" class="msg err" role="alert" hidden></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Fecha</th><th>Hora</th><th>Persona</th><th>Motivo</th><th>Estado</th><th class="right">Acciones</th></tr>
+            </thead>
+            <tbody id="tabla-solicitudes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card tab" id="tab-agenda" hidden>
+        <h2>Agenda de los proximos 30 dias</h2>
+        <p class="hint">Vista de todos sus horarios: libres, reservados y bloqueados.</p>
+        <div id="agenda"></div>
+      </section>
+
+      <section class="card tab" id="tab-disponibilidad" hidden>
+        <h2>Franjas de atencion semanales</h2>
+        <p class="hint">Cada franja se divide automaticamente en citas de la duracion indicada.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Dia</th><th>Horario</th><th>Duracion</th><th>Lugar</th><th class="right"></th></tr></thead>
+            <tbody id="tabla-reglas"></tbody>
+          </table>
+        </div>
+        <form id="form-regla" class="inline">
+          <div>
+            <label for="r-weekday">Dia</label>
+            <select id="r-weekday"></select>
+          </div>
+          <div>
+            <label for="r-inicio">Desde</label>
+            <input id="r-inicio" type="time" value="09:00" required>
+          </div>
+          <div>
+            <label for="r-fin">Hasta</label>
+            <input id="r-fin" type="time" value="12:00" required>
+          </div>
+          <div>
+            <label for="r-mins">Minutos por cita</label>
+            <input id="r-mins" type="number" min="10" max="240" step="5" value="30" required>
+          </div>
+          <div>
+            <label for="r-lugar">Lugar</label>
+            <input id="r-lugar" maxlength="120" placeholder="Despacho parroquial">
+          </div>
+          <div><button type="submit" class="primary">Agregar franja</button></div>
+        </form>
+        <div id="msg-reglas" class="msg err" role="alert" hidden></div>
+
+        <h2>Ausencias y bloqueos</h2>
+        <p class="hint">Retiros, vacaciones o compromisos que impiden atender.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Desde</th><th>Hasta</th><th>Horario</th><th>Motivo</th><th class="right"></th></tr></thead>
+            <tbody id="tabla-bloqueos"></tbody>
+          </table>
+        </div>
+        <form id="form-bloqueo" class="inline">
+          <div>
+            <label for="b-desde">Desde</label>
+            <input id="b-desde" type="date" required>
+          </div>
+          <div>
+            <label for="b-hasta">Hasta</label>
+            <input id="b-hasta" type="date" required>
+          </div>
+          <div>
+            <label for="b-motivo">Motivo</label>
+            <input id="b-motivo" maxlength="160" placeholder="Retiro espiritual">
+          </div>
+          <div>
+            <label><input type="checkbox" id="b-todo-el-dia" checked> Dia completo</label>
+          </div>
+          <div>
+            <label for="b-inicio">Desde hora</label>
+            <input id="b-inicio" type="time" value="08:00" disabled>
+          </div>
+          <div>
+            <label for="b-fin">Hasta hora</label>
+            <input id="b-fin" type="time" value="12:00" disabled>
+          </div>
+          <div><button type="submit" class="primary">Agregar bloqueo</button></div>
+        </form>
+        <div id="msg-bloqueos" class="msg err" role="alert" hidden></div>
+      </section>
+
+      <section class="card tab" id="tab-cuenta" hidden>
+        <h2>Mi presentacion publica</h2>
+        <form id="form-perfil">
+          <label for="p-title">Cargo</label>
+          <input id="p-title" maxlength="80" placeholder="Parroco">
+          <label for="p-bio">Presentacion breve</label>
+          <textarea id="p-bio" maxlength="400"></textarea>
+          <button type="submit" class="primary">Guardar</button>
+        </form>
+        <div id="msg-perfil" class="msg ok" role="status" hidden></div>
+
+        <h2>Cambiar contrasena</h2>
+        <form id="form-clave">
+          <label for="c-actual">Contrasena actual</label>
+          <input id="c-actual" type="password" autocomplete="current-password" required>
+          <label for="c-nueva">Nueva contrasena (minimo 12 caracteres, con letras y numeros)</label>
+          <input id="c-nueva" type="password" autocomplete="new-password" required>
+          <button type="submit" class="primary">Cambiar</button>
+        </form>
+        <div id="msg-clave" class="msg ok" role="status" hidden></div>
+      </section>
+
+      <section class="card tab" id="tab-admin-panel" hidden>
+        <h2>Usuarios</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th><th class="right"></th></tr></thead>
+            <tbody id="tabla-usuarios"></tbody>
+          </table>
+        </div>
+        <form id="form-usuario" class="inline">
+          <div>
+            <label for="u-nombre">Nombre</label>
+            <input id="u-nombre" maxlength="120" required>
+          </div>
+          <div>
+            <label for="u-email">Correo</label>
+            <input id="u-email" type="email" maxlength="254" required>
+          </div>
+          <div>
+            <label for="u-cargo">Cargo</label>
+            <input id="u-cargo" maxlength="80">
+          </div>
+          <div>
+            <label for="u-rol">Rol</label>
+            <select id="u-rol"><option value="lider">Lider</option><option value="admin">Administrador</option></select>
+          </div>
+          <div>
+            <label for="u-clave">Contrasena inicial</label>
+            <input id="u-clave" type="text" minlength="12" maxlength="200" required>
+          </div>
+          <div><button type="submit" class="primary">Crear usuario</button></div>
+        </form>
+        <div id="msg-usuarios" class="msg err" role="alert" hidden></div>
+
+        <h2>Registro de auditoria</h2>
+        <p class="hint">Ultimas 200 acciones sensibles del sistema.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Fecha (UTC)</th><th>Actor</th><th>Accion</th><th>Detalle</th></tr></thead>
+            <tbody id="tabla-auditoria"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site"><p>Panel interno. Cierre sesion al terminar, sobre todo en equipos compartidos.</p></footer>
+  <script src="/panel.js" type="module"></script>
+</body>
+</html>

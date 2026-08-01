@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultar o cancelar una cita</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+  <header class="site">
+    <div class="bar">
+      <a class="brand" href="/">
+        <span class="mark" aria-hidden="true">&#10013;</span>
+        <span><span id="parish-name">Parroquia</span><small>Agendamiento de citas</small></span>
+      </a>
+      <nav class="site" aria-label="Principal">
+        <a href="/">Solicitar cita</a>
+        <a href="/consulta" aria-current="page">Consultar o cancelar</a>
+        <a href="/panel">Soy lider</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="card">
+      <h2>Consulte el estado de su cita</h2>
+      <p class="hint">Necesita el codigo que recibio al solicitarla y el correo que registro.</p>
+      <form id="form-consulta" novalidate>
+        <div class="row">
+          <div>
+            <label for="code">Codigo de la cita</label>
+            <input id="code" name="code" maxlength="20" placeholder="ABCD-EFGH" required>
+          </div>
+          <div>
+            <label for="email">Correo electronico</label>
+            <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
+          </div>
+        </div>
+        <div id="msg" class="msg err" role="alert" hidden></div>
+        <button type="submit" class="primary">Consultar</button>
+      </form>
+    </section>
+
+    <section class="card" id="resultado" hidden>
+      <h2>Su cita</h2>
+      <div class="summary" id="detalle"></div>
+      <div id="msg2" class="msg ok" role="status" hidden></div>
+      <button type="button" class="danger" id="cancelar">Cancelar esta cita</button>
+      <p class="muted">Al cancelar, el horario queda libre para otra persona de la comunidad.</p>
+    </section>
+  </main>
+
+  <footer class="site"><p>Si tiene dudas, comuniquese con la casa parroquial.</p></footer>
+  <script src="/consulta.js" type="module"></script>
+</body>
+</html>

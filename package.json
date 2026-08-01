@@ -1,0 +1,16 @@
+{
+  "name": "citas-eclesiasticas",
+  "version": "1.0.0",
+  "description": "Agendamiento de citas con lideres eclesiasticos: control de disponibilidad y solicitudes en linea.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "seed": "node --no-warnings src/seed.js",
+    "test": "node --no-warnings --test test/*.test.js"
+  },
+  "license": "MIT",
+  "private": true
+}
