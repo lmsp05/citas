@@ -24,10 +24,14 @@ npm start                 # http://127.0.0.1:3000
 npm test                  # 15 pruebas: disponibilidad, reservas, permisos, CSRF
 ```
 
-Rutas: `/` solicitar cita, `/consulta` consultar o cancelar, `/panel` lideres.
+Para empezar en limpio, sin datos de ejemplo: borre `data/citas.db` y cree la
+primera cuenta de administrador.
 
-Para empezar de cero: borre `data/citas.db`, cree el primer administrador y
-cargue sus propias franjas de atencion desde el panel.
+```bash
+node src/crear-admin.js "Pbro. Andres Gomez" parroco@miparroquia.org
+```
+
+Rutas: `/` solicitar cita, `/consulta` consultar o cancelar, `/panel` lideres.
 
 ## Estructura
 
@@ -40,6 +44,7 @@ src/time.js       hora local de la parroquia (sin depender del navegador)
 src/slots.js      calculo de disponibilidad: reglas - bloqueos - citas
 src/routes.js     API HTTP
 src/server.js     servidor, archivos estaticos, mantenimiento periodico
+src/crear-admin.js  primera cuenta de administrador (base de datos limpia)
 public/           interfaz (HTML + CSS + JS sin framework)
 test/             pruebas de extremo a extremo con node:test
 ```
